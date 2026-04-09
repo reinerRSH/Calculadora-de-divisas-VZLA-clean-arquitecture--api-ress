@@ -1,0 +1,13 @@
+package com.example.dolarcotizacion.model.data
+
+import com.google.gson.annotations.SerializedName
+
+data class MonedaResponse(
+    val nombre: String,
+    val promedio: Float,
+    val venta: Float,
+    val fechaActualizacion: String,
+    @SerializedName("fecha_servidor")
+    val fechaServidor: String? = null
+)
+

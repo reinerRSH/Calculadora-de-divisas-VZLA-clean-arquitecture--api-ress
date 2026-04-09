@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+
+
+    <color name="grey">#8C4B4A4A</color>
+    <color name="colorBackgraund">#1A1A1A</color>
+
+    <color name="card_background">#E9DEDADA</color> <!-- Blanco -->
+    <color name="text_color_main">#000000</color>
+    <color name="text_color_bcv">#23BA13</color>
+    <color name="text_color_paralelo">#C80505</color>
+</resources>
