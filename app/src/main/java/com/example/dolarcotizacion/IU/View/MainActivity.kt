@@ -12,6 +12,8 @@ import androidx.core.widget.addTextChangedListener
 import com.example.dolarcotizacion.IU.ViewModel.MonedaViewModel
 import com.example.dolarcotizacion.R
 import com.example.dolarcotizacion.databinding.ActivityMainBinding
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -45,14 +47,12 @@ class MainActivity : AppCompatActivity() {
         binding.switchDivisa.setOnCheckedChangeListener { _, isChecked ->
 
             if (isChecked) {
-                binding.etCalculator.hint = "Bs. 0.00"
+                binding.etCalculator.hint = "Bs. 0,00"
                 binding.etCalculator.text.clear()
 
 
-
-
-            }else{
-                binding.etCalculator.hint = "1.00 $"
+            } else {
+                binding.etCalculator.hint = "1,00 $"
                 binding.etCalculator.text.clear()
             }
             ejecutarCalculoSegunEstado()
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 
 
                             binding.tvResultBcv.text =
-                                "Bs. ${String.format("%.2f", moneda.promedio)}"
+                                "Bs. ${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
                         }
 
 
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
                             tasaParalelo = moneda.promedio
 
                             binding.tvResultParalelo.text =
-                                "Bs. ${String.format("%.2f", moneda.promedio)}"
+                                "Bs. ${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
                         }
                     }
                 }
@@ -152,11 +152,46 @@ class MainActivity : AppCompatActivity() {
     private fun TextoEditable() {
 
         binding.etCalculator.addTextChangedListener(object : android.text.TextWatcher {
+
+            private var current = ""
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {
 
-                ejecutarCalculoSegunEstado()
+                val input = s.toString()
+                if (input != current) {
+                    binding.etCalculator.removeTextChangedListener(this)
+                    
+                    // Limpiamos todo lo que no sea números
+                    val cleanString = input.replace(Regex("[^\\d]"), "")
+
+                    if (cleanString.isNotEmpty()) {
+                        try {
+                            val parsed = cleanString.toDouble()
+                            
+                            // Configuramos el formato con punto para miles y coma para decimales
+                            val symbols = DecimalFormatSymbols(Locale("es", "ES"))
+                            symbols.groupingSeparator = '.'
+                            symbols.decimalSeparator = ','
+                            val decimalFormat = DecimalFormat("#,##0.00", symbols)
+                            
+                            val formatted = decimalFormat.format(parsed / 100)
+
+                            current = formatted
+                            binding.etCalculator.setText(formatted)
+                            binding.etCalculator.setSelection(formatted.length)
+                        } catch (e: Exception) {
+                            android.util.Log.e("CALC_ERROR", "Error al formatear: ${e.message}")
+                        }
+                    } else {
+                        current = ""
+                        binding.etCalculator.setText("")
+                    }
+                    
+                    binding.etCalculator.addTextChangedListener(this)
+                    ejecutarCalculoSegunEstado()
+                }
+
 
             }
         })
@@ -180,9 +215,9 @@ class MainActivity : AppCompatActivity() {
                     val bsBcv = dolares * tasaBcv
                     val bsParalelo = dolares * tasaParalelo
 
-                    // Mostramos resultados
-                    binding.tvBcv.text = "Bs. ${String.format("%.2f", bsBcv)}"
-                    binding.tvParalelo.text = "Bs. ${String.format("%.2f", bsParalelo)}"
+                    // Mostramos resultados con formato regional
+                    binding.tvBcv.text = "Bs. ${String.format(Locale("es", "ES"), "%.2f", bsBcv)}"
+                    binding.tvParalelo.text = "Bs. ${String.format(Locale("es", "ES"), "%.2f", bsParalelo)}"
 
 
                 } catch (e: Exception) {
@@ -200,31 +235,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun limpiar() {
-
-        viewModel.monedaData.observe(this) { valorLimpio ->
-            valorLimpio?.let {
-
-
-                it.forEach { moneda ->
-
-                    when (moneda.nombre) {
-                        "Dólar" -> {
-                            binding.tvBcv.text = "Bs.${String.format("%.2f", moneda.promedio)}"
-                        }
-
-                        "Paralelo" -> {
-
-                            binding.tvParalelo.text = "Bs.${String.format("%.2f", moneda.promedio)}"
-                        }
+        viewModel.monedaData.value?.let { lista ->
+            lista.forEach { moneda ->
+                when (moneda.nombre) {
+                    "Dólar" -> {
+                        binding.tvBcv.text = "Bs.${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
                     }
 
+                    "Paralelo" -> {
+                        binding.tvParalelo.text = "Bs.${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
+                    }
                 }
             }
-
-
         }
-
-
     }
 
     fun calcularDolar(texto: String) {
@@ -244,8 +267,8 @@ class MainActivity : AppCompatActivity() {
                     val bsParalelo = dolares / tasaParalelo
 
                     // Mostramos resultados
-                    binding.tvBcv.text = "$ ${String.format("%.2f", bsBcv)}"
-                    binding.tvParalelo.text = "$ ${String.format("%.2f", bsParalelo)}"
+                    binding.tvBcv.text = "$ ${String.format(Locale("es", "ES"), "%.2f", bsBcv)}"
+                    binding.tvParalelo.text = "$ ${String.format(Locale("es", "ES"), "%.2f", bsParalelo)}"
 
 
                 } catch (e: Exception) {
@@ -263,29 +286,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun ejecutarCalculoSegunEstado() {
-        val texto = binding.etCalculator.text.toString()
+        // Quitamos los puntos y cambiamos coma por punto para que float pueda entenderlo
+        val rawText = binding.etCalculator.text.toString()
+        val textoLimpio = rawText.replace(".", "").replace(",", ".")
+
         if (binding.switchDivisa.isChecked) {
-            calcularDolar(texto)
+            calcularDolar(textoLimpio)
         } else {
-            calcular(texto)
+            calcular(textoLimpio)
         }
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
