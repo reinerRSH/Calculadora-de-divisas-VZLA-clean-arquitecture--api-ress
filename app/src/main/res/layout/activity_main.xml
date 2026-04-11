@@ -26,6 +26,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/btnShare"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/share"
+            android:background="@drawable/background_share"
+            />
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -39,12 +49,11 @@
             android:textColor="@color/text_color_main"/>
 
 
-        <Switch
-            android:id="@+id/switchDivisa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-
+       <Switch
+           android:id="@+id/switchDivisa"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           tools:ignore="UseSwitchCompatOrMaterialXml"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,25 +96,43 @@
        />
 
 
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BCV (Oficial)"
+                android:textSize="16sp"
+                android:textColor="@color/text_color_main"
+                android:gravity="center" />
  ->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="BCV (Oficial)"
-        android:textSize="16sp"
-        android:textColor="@color/text_color_main"
-        android:gravity="center" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                android:elevation="0dp"
+                android:padding="8dp"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/colorBackgraundTexto">
 
-    <TextView
-        android:id="@+id/tvBcv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bs. 0,00"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textColor="@color/text_color_bcv" />
+
+
+
+
+                <TextView
+                    android:id="@+id/tvBcv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bs. 0,00"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/text_color_bcv" />
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
 
     <!-- Espacio entre precios -->
     <Space
@@ -116,20 +143,32 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Paralelo (Monitor)"
+        android:text="USDT (Referencia)"
         android:textSize="16sp"
         android:textColor="@color/text_color_main"
         android:gravity="center" />
+
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    android:elevation="0dp"
+    android:padding="8dp"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/colorBackgraundTexto">
 
     <TextView
         android:id="@+id/tvParalelo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Bs. 0,00"
-        android:textSize="40sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/text_color_paralelo" />
+</androidx.cardview.widget.CardView>
+
+
 
     <View
         android:layout_width="match_parent"
@@ -143,6 +182,15 @@
         android:textColor="@color/text_color_main"
         android:textSize="16sp" />
 
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    android:elevation="0dp"
+    android:padding="8dp"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/colorBackgraundTexto">
+
     <EditText
         android:id="@+id/etCalculator"
         android:layout_width="match_parent"
@@ -152,6 +200,8 @@
         android:inputType="numberDecimal"
         android:textAlignment="center"
         android:layout_marginTop="10dp" />
+
+</androidx.cardview.widget.CardView>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

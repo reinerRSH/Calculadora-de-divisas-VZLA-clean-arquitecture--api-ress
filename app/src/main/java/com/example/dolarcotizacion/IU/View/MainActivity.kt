@@ -1,17 +1,25 @@
 package com.example.dolarcotizacion.IU.View
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.text.Editable
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.dolarcotizacion.IU.ViewModel.MonedaViewModel
 import com.example.dolarcotizacion.R
 import com.example.dolarcotizacion.databinding.ActivityMainBinding
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.ZoneId
@@ -44,7 +52,20 @@ class MainActivity : AppCompatActivity() {
         setupObservers()
         TextoEditable()
 
+        binding.btnShare.setOnClickListener {
+
+            ShareImage(window.decorView.rootView)
+        }
+
         binding.switchDivisa.setOnCheckedChangeListener { _, isChecked ->
+
+            if (binding.switchDivisa.isChecked){
+                binding.switchDivisa.thumbTintList = getColorStateList(R.color.colorThumb)
+            }else {
+                binding.switchDivisa.thumbTintList = getColorStateList(R.color.colorThumbOff)
+            }
+
+
 
             if (isChecked) {
                 binding.etCalculator.hint = "Bs. 0,00"
@@ -295,6 +316,39 @@ class MainActivity : AppCompatActivity() {
         } else {
             calcular(textoLimpio)
         }
+    }
+
+    fun ShareImage(view: View){
+
+        try {
+            // 1. Crear el Bitmap de la vista (la pantalla)
+            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            view.draw(canvas)
+
+            // 2. Guardar el bitmap en el cache
+            val cachePath = File(cacheDir, "images")
+            cachePath.mkdirs()
+            val stream = FileOutputStream("$cachePath/image.png")
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.close()
+
+            // 3. Obtener el URI usando el FileProvider
+            val imagePath = File(cacheDir, "images/image.png")
+            val contentUri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imagePath)
+
+            // 4. Crear el Intent de compartir
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, contentUri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(shareIntent, "Compartir captura"))
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
     }
 
 }

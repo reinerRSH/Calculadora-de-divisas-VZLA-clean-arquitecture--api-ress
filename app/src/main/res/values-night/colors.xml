@@ -12,5 +12,6 @@
 
     <color name="card_background">#2B2B2B</color> <!-- Blanco -->
     <color name="text_color_main">#FFFFFF</color>
+    <color name="colorBackgraundTexto">#424242</color>
 
 </resources>
