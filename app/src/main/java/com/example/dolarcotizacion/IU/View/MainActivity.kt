@@ -83,13 +83,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        binding.btnUpdate.setOnClickListener {
-            Toast.makeText(this, "Actualizando...", Toast.LENGTH_SHORT).show()
-
-            viewModel.fetchPrecios()
 
 
-        }
+
+
 
 
     }
