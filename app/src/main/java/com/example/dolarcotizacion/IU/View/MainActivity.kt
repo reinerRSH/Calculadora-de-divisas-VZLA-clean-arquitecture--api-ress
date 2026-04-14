@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                             tasaBcv = moneda.promedio
 
 
-                            binding.tvResultBcv.text =
+                            binding.tvBcv.text =
                                 "Bs. ${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
                         }
 
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
                         "Paralelo" -> {
                             tasaParalelo = moneda.promedio
 
-                            binding.tvResultParalelo.text =
+                            binding.tvParalelo.text =
                                 "Bs. ${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
                         }
                     }
@@ -213,6 +213,11 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
+
+        if ( binding.etCalculator.text.isEmpty()){
+            limpiar()
+        }
+
 
     }
 
