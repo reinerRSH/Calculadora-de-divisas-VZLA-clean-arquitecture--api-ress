@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class DolarEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val nombre: String,
-    val valor : Float,
-    val fecha : String
+    val valor: Float,
+    val fechaServidor: String?
 )

@@ -1,43 +1,46 @@
 package com.example.dolarcotizacion.IU.ViewModel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.dolarcotizacion.model.data.DolarEntity
+import com.example.dolarcotizacion.model.repository.DolarRepository
 import com.example.dolarcotizacion.model.data.MonedaResponse
-import com.example.dolarcotizacion.model.repository.MonedaRepository
 import kotlinx.coroutines.launch
 
-class MonedaViewModel: ViewModel() {
+class MonedaViewModel(private val repository: DolarRepository) : ViewModel() {
 
-    private val repository = MonedaRepository()
 
-    // Aquí guardaremos la respuesta de la API
-    val monedaData = MutableLiveData<List<MonedaResponse>?>()
+    // respuesta de la API
+    private val _monedaData = MutableLiveData<List<DolarEntity>?>()
 
-    // Para mostrar un error en la interfaz
-    val error = MutableLiveData<String>()
+    val monedaData: LiveData<List<DolarEntity>?> = _monedaData
 
-    // Esta es la función que llamarás desde el botón
+    // Aquí guardaremos el error
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
     fun fetchPrecios() {
-        // Iniciamos la corrutina en el hilo de fondo
+
         viewModelScope.launch {
             try {
                 // Llamamos al repositorio
-                val response = repository.getPreciosDolar()
+                val resultado = repository.getPreciosDolar()
 
 
 
-                if (response.isSuccessful) {
+                if (resultado !=null) {
                     // Si la API responde, metemos el objeto en el LiveData
-                    monedaData.postValue(response.body())
+                    _monedaData.value = resultado
 
                 } else {
                     // Si el servidor falla (ej. error 500 o 404)
-                    error.postValue("Error del servidor: ${response.code()}")
+                    _error.value = ("no hay datos disponible ( sin internet )")
                 }
             } catch (e: Exception) {
                 // Si no hay internet o la URL está mal escrita
-                error.postValue("Error de conexión: ${e.message}")
+                _error.value= "Error de conexión: ${e.message}"
             }
         }
     }

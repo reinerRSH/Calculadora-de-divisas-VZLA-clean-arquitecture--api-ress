@@ -15,8 +15,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.dolarcotizacion.IU.ViewModel.MonedaViewModel
+import com.example.dolarcotizacion.IU.ViewModel.MonedaViewModelFactory
 import com.example.dolarcotizacion.R
 import com.example.dolarcotizacion.databinding.ActivityMainBinding
+import com.example.dolarcotizacion.model.data.appDatabase
+import com.example.dolarcotizacion.model.network.RetrofitClient
+import com.example.dolarcotizacion.model.repository.DolarRepository
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -35,7 +39,11 @@ class MainActivity : AppCompatActivity() {
     private var tasaParalelo = 0.0f
 
 
-    private val viewModel: MonedaViewModel by viewModels()
+    private val viewModel: MonedaViewModel by viewModels {
+        val database = appDatabase.getDatabase(this)
+        val repository = DolarRepository(RetrofitClient.apiService, database.dolarDao())
+        MonedaViewModelFactory(repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,32 +144,32 @@ class MainActivity : AppCompatActivity() {
                 it.forEach { moneda ->
                     // Log para ver en el Logcat si los datos llegan
                     android.util.Log.d(
-                        "API_DEBUG", "Moneda: ${moneda.nombre} - Valor: ${moneda.promedio}"
+                        "API_DEBUG", "Moneda: ${moneda.nombre} - Valor: ${moneda.valor}"
                     )
 
                     when (moneda.nombre) {
                         "Dólar" -> {
-                            tasaBcv = moneda.promedio
+                            tasaBcv = moneda.valor
 
 
                             binding.tvBcv.text =
-                                "Bs. ${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
+                                "Bs. ${String.format(Locale("es", "ES"), "%.2f", moneda.valor)}"
                         }
 
 
                         "Paralelo" -> {
-                            tasaParalelo = moneda.promedio
+                            tasaParalelo = moneda.valor
 
                             binding.tvParalelo.text =
-                                "Bs. ${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
+                                "Bs. ${String.format(Locale("es", "ES"), "%.2f", moneda.valor)}"
                         }
                     }
                 }
 
                 // Formatear la fecha del primer elemento
                 if (it.isNotEmpty()) {
-                    val fechaRaw = it[0].fechaActualizacion
-                    binding.tvFecha.text = "Actualizado: ${fechaRaw.split("T")[0]}"
+                    val fechaRaw = it[0].fechaServidor
+                    binding.tvFecha.text = "Actualizado: ${fechaRaw?.split("T")[0]}"
                 }
             }
         }
@@ -262,11 +270,11 @@ class MainActivity : AppCompatActivity() {
             lista.forEach { moneda ->
                 when (moneda.nombre) {
                     "Dólar" -> {
-                        binding.tvBcv.text = "Bs.${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
+                        binding.tvBcv.text = "Bs.${String.format(Locale("es", "ES"), "%.2f", moneda.valor)}"
                     }
 
                     "Paralelo" -> {
-                        binding.tvParalelo.text = "Bs.${String.format(Locale("es", "ES"), "%.2f", moneda.promedio)}"
+                        binding.tvParalelo.text = "Bs.${String.format(Locale("es", "ES"), "%.2f", moneda.valor)}"
                     }
                 }
             }

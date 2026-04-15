@@ -11,9 +11,8 @@ interface DolarDao{
     suspend fun insertDolar(dolar: DolarEntity)
 
 
-
-    @Query("SELECT * FROM Precio_dolar ORDER BY id DESC LIMIT 1")
-    suspend fun obtenerUltimoDolar(): DolarEntity?
+    @Query("SELECT * FROM Precio_dolar ORDER BY id DESC")
+    suspend fun obtenerTodosLosDolares(): List<DolarEntity>
 
 }
 
