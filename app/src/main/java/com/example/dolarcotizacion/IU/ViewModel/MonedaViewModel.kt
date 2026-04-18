@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.dolarcotizacion.model.data.DolarEntity
 import com.example.dolarcotizacion.model.repository.DolarRepository
 import com.example.dolarcotizacion.model.data.MonedaResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MonedaViewModel(private val repository: DolarRepository) : ViewModel() {
+@HiltViewModel
+class MonedaViewModel @Inject constructor(private val repository: DolarRepository) : ViewModel() {
 
 
     // respuesta de la API

@@ -12,23 +12,4 @@ abstract class appDatabase: RoomDatabase() {
 
     abstract fun dolarDao(): DolarDao
 
-    companion object{
-        @Volatile
-        private var INSTANCE: appDatabase? = null
-
-        fun getDatabase(context: Context): appDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    appDatabase::class.java,
-                    "app_database"
-                ).build()
-                INSTANCE = instance
-                instance
-            }
-        }
-
-
-
-    }
 }

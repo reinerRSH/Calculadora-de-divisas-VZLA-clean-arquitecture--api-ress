@@ -7,7 +7,7 @@ data class MonedaResponse(
     val promedio: Float,
     val venta: Float,
     val fechaActualizacion: String,
-    @SerializedName("fecha_servidor")
+    @SerializedName("fechaActualizacion")
     val fechaServidor: String? = null
 )
 

@@ -3,8 +3,10 @@ package com.example.dolarcotizacion.model.repository
 import com.example.dolarcotizacion.model.data.DolarDao
 import com.example.dolarcotizacion.model.data.DolarEntity
 import com.example.dolarcotizacion.model.network.ApiService
+import javax.inject.Inject
 
-class DolarRepository(private val api: ApiService, private val dao: DolarDao) {
+class DolarRepository @Inject constructor(private val api: ApiService, private val dao: DolarDao) {
+
 
     suspend fun getPreciosDolar(): List<DolarEntity>? {
         return try {
@@ -16,7 +18,7 @@ class DolarRepository(private val api: ApiService, private val dao: DolarDao) {
                     DolarEntity(
                         nombre = dto.nombre,
                         valor = dto.promedio,
-                        fechaServidor = dto.fechaServidor ?: "Fecha no disponible"
+                        fechaServidor = dto.fechaServidor ?: "sin fecha"
                     )
                 }
 
