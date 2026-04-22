@@ -21,7 +21,7 @@ object appModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(): ApiService {
+    fun provideApiService(): ApiService {
 
         return Retrofit.Builder()
             .baseUrl("https://ve.dolarapi.com/v1/")

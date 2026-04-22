@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.dolarcotizacion.IU.ViewModel.MonedaViewModel
 import com.example.dolarcotizacion.R
 import com.example.dolarcotizacion.databinding.FragmentHomeBinding
@@ -46,14 +47,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupObservers()
         textoEditable()
 
-        // 3. Configurar clics
+        // 3. Compartir pantalla
         binding.btnShare.setOnClickListener {
-            // Pasamos la vista raíz del fragmento
             shareImage(requireView())
         }
 
         binding.switchDivisa.setOnCheckedChangeListener { _, isChecked ->
-            // En Fragment usamos ContextCompat para los colores
             val colorOn = ContextCompat.getColorStateList(requireContext(), R.color.colorThumb)
             val colorOff = ContextCompat.getColorStateList(requireContext(), R.color.colorThumbOff)
 
@@ -68,6 +67,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
             ejecutarCalculoSegunEstado()
         }
+
+                binding.RegistroPagM.setOnClickListener {
+                    findNavController().navigate(R.id.action_homeFragment_to_pagoMovilFragment3)
+                }
     }
 
     private fun setupObservers() {
