@@ -38,11 +38,15 @@ object appModule {
             context,
             appDatabase::class.java,
             "app_database"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
 
 
     }
 
     @Provides
     fun provideDolarDao(database: appDatabase) = database.dolarDao()
+
+    @Provides
+    fun providePagoMovilDao(database: appDatabase) = database.pagoMovilDao()
 }

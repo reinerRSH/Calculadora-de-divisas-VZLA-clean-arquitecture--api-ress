@@ -3,10 +3,11 @@ package com.example.dolarcotizacion.model.data.Entitys
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Precio_dolar")
-data class DolarEntity(
+@Entity(tableName = "pago_movil")
+data class PagoMovilEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val nombre: String,
-    val valor: Float,
-    val fechaServidor: String?
+    val banco: String,
+    val ci: String,
+    val telefono: String
 )

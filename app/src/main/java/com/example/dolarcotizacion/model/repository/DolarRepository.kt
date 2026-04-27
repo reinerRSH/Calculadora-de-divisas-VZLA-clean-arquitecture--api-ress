@@ -1,6 +1,6 @@
 package com.example.dolarcotizacion.model.repository
 
-import com.example.dolarcotizacion.model.data.DolarDao
+import com.example.dolarcotizacion.model.Daos.DolarDao
 import com.example.dolarcotizacion.model.data.DolarEntity
 import com.example.dolarcotizacion.model.network.ApiService
 import javax.inject.Inject

@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.dolarcotizacion.IU.ViewModel.MonedaViewModel
-import com.example.dolarcotizacion.IU.ViewModel.MonedaViewModelFactory
 import com.example.dolarcotizacion.R
 import com.example.dolarcotizacion.databinding.ActivityMainBinding
 import com.example.dolarcotizacion.model.data.appDatabase
@@ -48,7 +47,8 @@ class MainActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom + ime.bottom)
             insets
         }
     }

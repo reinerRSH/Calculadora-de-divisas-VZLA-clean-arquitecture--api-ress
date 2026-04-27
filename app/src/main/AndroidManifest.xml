@@ -19,6 +19,7 @@
         android:theme="@style/Theme.DolarCotizacion">
         <activity
             android:name=".IU.View.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
             tools:ignore="MissingClass">
             <intent-filter>

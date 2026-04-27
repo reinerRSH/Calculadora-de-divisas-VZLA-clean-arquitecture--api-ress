@@ -16,4 +16,8 @@
     <color name="text_color_main">#000000</color>
     <color name="text_color_bcv">#23BA13</color>
     <color name="text_color_paralelo">#C80505</color>
+    <color name="colorBox">#2C2B2B</color>
+
+
+
 </resources>
