@@ -29,4 +29,12 @@ class PagoMovilViewModel @Inject constructor(
             daoPagoMovil.insertPago(nuevoPago)
         }
     }
-}
+
+    fun actualizarDatos(datoPGM: PagoMovilEntity) {
+        viewModelScope.launch {
+            daoPagoMovil.updatePago(datoPGM)
+        }
+    }
+
+
+    }

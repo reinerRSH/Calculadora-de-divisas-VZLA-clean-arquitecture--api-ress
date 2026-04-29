@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.dolarcotizacion.model.data.Entitys.PagoMovilEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,6 +20,9 @@ interface PagoMovilDao {
 
     @Delete
     suspend fun deletePago(pago: PagoMovilEntity)
+    @Update
+    suspend fun updatePago(pago: PagoMovilEntity)
+
 
 
 
