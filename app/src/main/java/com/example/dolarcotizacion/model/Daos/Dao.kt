@@ -1,9 +1,10 @@
-package com.example.dolarcotizacion.model.data
+package com.example.dolarcotizacion.model.Daos
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.dolarcotizacion.model.data.DolarEntity
 
 @Dao
 interface DolarDao{

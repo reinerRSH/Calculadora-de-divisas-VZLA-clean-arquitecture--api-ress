@@ -1,6 +1,6 @@
 package com.example.dolarcotizacion.model.repository
 
-import com.example.dolarcotizacion.model.data.DolarDao
+import com.example.dolarcotizacion.model.Daos.DolarDao
 import com.example.dolarcotizacion.model.data.DolarEntity
 import com.example.dolarcotizacion.model.network.ApiService
 import javax.inject.Inject
@@ -17,7 +17,7 @@ class DolarRepository @Inject constructor(private val api: ApiService, private v
                 val listaLimpia = body.map { dto ->
                     DolarEntity(
                         nombre = dto.nombre,
-                        valor = dto.promedio,
+                        valor = dto.promedio ?: 0f,
                         fechaServidor = dto.fechaServidor ?: "sin fecha"
                     )
                 }

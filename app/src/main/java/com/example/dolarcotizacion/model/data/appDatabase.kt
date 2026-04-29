@@ -1,15 +1,20 @@
 package com.example.dolarcotizacion.model.data
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import kotlin.jvm.java
+import com.example.dolarcotizacion.model.Daos.DolarDao
+import com.example.dolarcotizacion.model.Daos.PagoMovilDao
 
-@Database(entities = [DolarEntity::class], version = 1)
+import com.example.dolarcotizacion.model.data.Entitys.PagoMovilEntity
+
+
+@Database(entities = [DolarEntity::class, PagoMovilEntity::class], version = 2)
 abstract class appDatabase: RoomDatabase() {
 
 
     abstract fun dolarDao(): DolarDao
-
+    abstract fun pagoMovilDao(): PagoMovilDao
 }
+
+
+
